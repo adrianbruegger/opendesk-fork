@@ -16,7 +16,7 @@ import {
   startOfWeek,
 } from "date-fns";
 import { CalendarDays, ChevronLeft, ChevronRight, X } from "lucide-react";
-import { fr } from "date-fns/locale";
+import { dateLocale, datePattern } from "@/i18n/dates";
 import { useEffect, useMemo, useRef, useState, type KeyboardEvent } from "react";
 import { cn } from "@/lib/cn";
 import { inputBase, TextInput } from "./input";
@@ -48,7 +48,7 @@ export function Calendar({
   className?: string;
 }) {
   const { t: ui, i18n } = useTranslation("ui");
-  const locale = i18n.resolvedLanguage === "fr" ? fr : undefined;
+  const locale = dateLocale(i18n.resolvedLanguage);
   const [focus, setFocus] = useState(() => startOfDay(value ?? new Date()));
   const [month, setMonth] = useState(() => startOfMonth(focus));
   const grid = useRef<HTMLDivElement>(null);
@@ -179,7 +179,7 @@ export function DateField({
   "aria-label"?: string;
 }) {
   const { t: ui, i18n } = useTranslation("ui");
-  const locale = i18n.resolvedLanguage === "fr" ? fr : undefined;
+  const locale = dateLocale(i18n.resolvedLanguage);
   const [open, setOpen] = useState(false);
   const day = parseDay(value);
   return (
@@ -202,7 +202,7 @@ export function DateField({
             )}
           >
             <CalendarDays className="size-3.5 shrink-0 text-fg-3" />
-            <span className={cn("mono truncate", !day && "font-sans text-fg-4")}>{day ? format(day, "d MMM yyyy", { locale }) : (placeholder ?? ui("pickADate"))}</span>
+            <span className={cn("mono truncate", !day && "font-sans text-fg-4")}>{day ? format(day, datePattern("field", i18n.resolvedLanguage), { locale }) : (placeholder ?? ui("pickADate"))}</span>
           </button>
         }
       >
